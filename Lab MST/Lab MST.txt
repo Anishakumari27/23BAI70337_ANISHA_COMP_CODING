@@ -1,0 +1,48 @@
+---------------------------Leetcode 875---------------------------
+
+class Solution {
+public:
+    int minEatingSpeed(vector<int>& piles, int h) {
+        long long l=1;;
+        long long r=*max_element(piles.begin(),piles.end());
+        while(l<r){
+            long long m=(l+r)/2;
+            long long hours=0;
+            for(long long p:piles){
+                hours+=(p+m-1)/m;
+            }
+            if(hours<=h){
+                r=m;
+            }
+            else{
+                l=m+1;
+            }
+        }
+        return l;
+    }
+};
+
+---------------------------Leetcode 1590---------------------------
+
+class Solution{
+public:
+    int minSubarray(vector<int>& nums,int p){
+        long long sum=0;
+        for(int x:nums) sum+=x;
+        int need=sum%p;
+        if(need==0) return 0;
+        unordered_map<int,int> mp;
+        mp[0]=-1;
+        long long prefix=0;
+        int ans=nums.size();
+        for(int i=0;i<nums.size();i++){
+            prefix+=nums[i];
+            int curr=prefix%p;
+            int target=(curr-need+p)%p;
+            if(mp.count(target))
+                ans=min(ans,i-mp[target]);
+            mp[curr]=i;
+        }
+        return ans==nums.size()?-1:ans;
+    }
+};
